@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="List" representedClassName="List" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="parentList" inverseEntity="Task"/>
+    </entity>
+    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="parentList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="List" inverseName="tasks" inverseEntity="List"/>
+    </entity>
+    <elements>
+        <element name="List" positionX="-279.3613891601562" positionY="-4.78057861328125" width="128" height="88"/>
+        <element name="Task" positionX="-54" positionY="-9" width="128" height="103"/>
+    </elements>
 </model>

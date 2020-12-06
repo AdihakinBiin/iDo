@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+    <entity name="List" representedClassName="List" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="parentList" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="tasks" inverseEntity="Task"/>
+    </entity>
+    <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="tasks" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="List" inverseName="parentList" inverseEntity="List"/>
+    </entity>
+    <elements>
+        <element name="List" positionX="-143.4302978515625" positionY="-80.98890686035156" width="128" height="88"/>
+        <element name="Task" positionX="159.4716186523438" positionY="-38.048583984375" width="128" height="103"/>
+    </elements>
 </model>

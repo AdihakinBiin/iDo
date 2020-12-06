@@ -4,14 +4,19 @@
 //
 //  Created by Abdihakin Elmi on 11/26/20.
 //
-
+import GoogleMobileAds
 import UIKit
 import CoreData
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+//        GADMobileAds.sharedInstance().requestConfiguration.
+        
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
+
         return true
     }
 
