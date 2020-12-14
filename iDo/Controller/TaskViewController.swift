@@ -12,16 +12,13 @@ import GoogleMobileAds
 
 class TaskViewController: UIViewController {
     
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var taskLabel: UILabel!
-    
-    var task = [Task]()
     @IBOutlet var bannerView: GADBannerView!
+
+    var task = [Task]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
- 
     
     var SelectedList: List? {
         didSet{
@@ -38,16 +35,16 @@ class TaskViewController: UIViewController {
           bannerView.rootViewController = self
           bannerView.load(GADRequest())
     }
-   
     
     @IBAction func didTabAdd(){
         guard let vc = storyboard?.instantiateViewController(identifier: "addTask") as? AddTaskViewController else { return }
         vc.title = "Add New Task"
-        vc.completionTask = { text, date in
+        vc.completionTask = { text, date, time in
             self.dismiss(animated: true, completion: nil)
             let newTask = Task(context: self.context)
             newTask.title = text
             newTask.date = date
+            newTask.time = time
             newTask.parentList = self.SelectedList
             newTask.color = self.SelectedList?.color
             self.task.append(newTask)
@@ -100,34 +97,43 @@ extension TaskViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = task[indexPath.row].title
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d 'at' hh:mm"
+        dateFormatter.dateFormat = "MMM d"
         dateFormatter.locale = Locale.current
+        let formattedDate =  dateFormatter.string(from: task[indexPath.row].date ?? Date())
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "hh:mm"
+        timeFormatter.locale = Locale.current
+        let formattedTime =  timeFormatter.string(from: task[indexPath.row].time ?? Date())
 
         cell.backgroundColor = UIColor(hexString: SelectedList?.color)?.darken(byPercentage:  CGFloat(indexPath.row) / CGFloat(task.count))
         cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: cell.backgroundColor, isFlat: true)
         cell.detailTextLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: cell.backgroundColor, isFlat: true)
-
-
-        cell.detailTextLabel?.text = dateFormatter.string(from: task[indexPath.row].date!)
+        cell.detailTextLabel?.text = "\(formattedDate) at \(formattedTime)"
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     // this method handles row deletion
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-
-        if editingStyle == .delete {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "delete") { (action, sourceView, completionHandler) in
             /// remove the item from the data model
             self.context.delete(self.task[indexPath.row])
             self.task.remove(at: indexPath.row)
-
+            
             /// delete the table view row
             tableView.deleteRows(at: [indexPath], with: .fade)
             self.saveTask()
+            completionHandler(true)
         }
+        deleteAction.image = UIImage(systemName: "trash")
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
     }
 }
 
@@ -138,20 +144,17 @@ extension TaskViewController: UISearchBarDelegate {
         if searchBar.text?.count == 0 {
             DispatchQueue.main.async {
                 searchBar.resignFirstResponder()
-                
             }
             self.tableView.reloadData()
         }
         
-       
+       fetchTask()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let request: NSFetchRequest<Task> = Task.fetchRequest()
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.sortDescriptors = [ NSSortDescriptor(key: "title", ascending: true)]
-        
-        
         do{
           task = try context.fetch(request)
         } catch {

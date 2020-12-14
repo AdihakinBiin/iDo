@@ -1,7 +1,7 @@
 PODS:
-  - ChameleonFramework (2.1.0):
-    - ChameleonFramework/Default (= 2.1.0)
   - ChameleonFramework/Default (2.1.0)
+  - ChameleonFramework/Swift (2.1.0):
+    - ChameleonFramework/Default
   - Google-Mobile-Ads-SDK (7.68.0):
     - GoogleAppMeasurement (~> 7.0)
     - GoogleUserMessagingPlatform (~> 1.1)
@@ -37,7 +37,7 @@ PODS:
   - PromisesObjC (1.2.11)
 
 DEPENDENCIES:
-  - ChameleonFramework
+  - ChameleonFramework/Swift
   - Google-Mobile-Ads-SDK (~> 7.68)
 
 SPEC REPOS:
@@ -59,6 +59,6 @@ SPEC CHECKSUMS:
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
 
-PODFILE CHECKSUM: 1971a4ded81c42d98fd3370ebf41213de62c78b8
+PODFILE CHECKSUM: 7d40da673031c48fdd65c1bde6d4ca58dab47dcc
 
 COCOAPODS: 1.10.0

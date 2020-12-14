@@ -7,12 +7,14 @@
 
 import UIKit
 import ChameleonFramework
+import GoogleMobileAds
 
 class AddListViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet  var colorPalette: [UIView]!
     @IBOutlet  var textField: UITextField?
-    
+    @IBOutlet var bannerView: GADBannerView!
+
     
     public var completion : ((String, UIColor) -> Void)?
     
@@ -26,6 +28,14 @@ class AddListViewController: UIViewController, UITextFieldDelegate {
         setUpColorPalette()
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         view.addGestureRecognizer(tap)
+        
+        // Replace this ad unit ID with your own ad unit ID.
+          bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+          bannerView.rootViewController = self
+          bannerView.load(GADRequest())
+        
+        textField?.layer.cornerRadius = 25.0
+        textField?.backgroundColor = .secondarySystemFill
     }
     @IBAction func didTabSave(_sender: UIButton){
         if let text = textField?.text, !text.isEmpty {

@@ -15,11 +15,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var button: UIButton!
     @IBOutlet  var listLabel: UILabel!
-    
-    var list = [List]()
-    
     @IBOutlet var bannerView: GADBannerView!
 
+    var list = [List]()
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -70,7 +69,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
        
         cell.textLabel?.text = list[indexPath.row].name
         cell.imageView?.tintColor = UIColor(hexString: list[indexPath.row].color)
-        
         return cell
     }
     
@@ -83,20 +81,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    // this method handles row completion
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let complete = UIContextualAction(style: .normal, title: "Complete") { (action, sourceView, completionHander) in
-            self.list.remove(at: indexPath.row)
-            /// delete the table view row
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            completionHander(true)
-        }
-        complete.backgroundColor = .systemGreen
-        complete.image = UIImage(systemName: "checkmark.circle.fill")
-        let swipeConfiguration = UISwipeActionsConfiguration(actions: [complete])
-        return swipeConfiguration
-        
-    }
     // this method handles row deletion
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "delete") { (action, sourceView, completionHandler) in
@@ -109,7 +93,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.saveList()
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash.circle.fill")
+        deleteAction.image = UIImage(systemName: "trash")
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
     }
